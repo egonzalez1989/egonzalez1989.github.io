@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Edgar González Fernández | Investigación en Inteligencia Artificial</title>
+<meta name="description" content="Investigador en inteligencia artificial: visión por computadora, forense digital de imágenes, sistemas multiagente y optimización. SNII Nivel I.">
+<meta property="og:title" content="Edgar González Fernández | Investigación en IA">
+<meta property="og:description" content="Visión por computadora, sistemas multiagente, optimización y ciencia de datos.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 4'><rect width='2' height='2' fill='%23c2413b'/><rect x='2' width='2' height='2' fill='%233e8e5a'/><rect y='2' width='2' height='2' fill='%233e8e5a'/><rect x='2' y='2' width='2' height='2' fill='%232f5da8'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#eef1f4; --panel:#ffffff; --ink:#1b2433; --muted:#566172; --rule:#cfd6df;
+  --r:#c2413b; --g:#3e8e5a; --b:#2f5da8; --focus:#2f5da8;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#151b24; --panel:#1d2430; --ink:#e6eaf0; --muted:#9aa5b4; --rule:#2e3746;
+    --r:#e0706a; --g:#6cbf88; --b:#7fa3e6; --focus:#7fa3e6;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#151b24; --panel:#1d2430; --ink:#e6eaf0; --muted:#9aa5b4; --rule:#2e3746;
+  --r:#e0706a; --g:#6cbf88; --b:#7fa3e6; --focus:#7fa3e6;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:1.125rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,canvas{max-width:100%}
+a{color:var(--b);text-underline-offset:.18em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:2px}
+.wrap{max-width:72rem;margin:0 auto;padding:0 1.5rem}
+
+/* Navigation */
+nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.25rem 0;font-family:var(--sans);font-size:.95rem}
+nav .mark{display:flex;align-items:center;gap:.6rem;font-weight:600;color:var(--ink);text-decoration:none}
+nav .mark i{display:grid;grid-template-columns:repeat(2,7px);gap:1px}
+nav .mark i b{width:7px;height:7px}
+nav ul{display:flex;gap:1.25rem;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+nav ul a{color:var(--muted);text-decoration:none}
+nav ul a:hover{color:var(--ink)}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:3rem;align-items:center;padding:3rem 0 4rem}
+.hero h1{font-weight:400;font-size:clamp(2.8rem,6.5vw,5.2rem);line-height:.98;letter-spacing:-.02em;margin:0 0 1.5rem}
+.hero .role{font-family:var(--sans);font-size:1.15rem;font-weight:500;margin:0 0 1rem;max-width:34rem}
+.hero .lede{color:var(--muted);max-width:36rem;margin:0 0 2rem}
+.actions{display:flex;flex-wrap:wrap;gap:.75rem;font-family:var(--sans);font-size:.95rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;border:1px solid var(--ink);color:var(--ink);text-decoration:none;border-radius:3px;background:transparent}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+
+.sensor{margin:0;background:var(--panel);border:1px solid var(--rule);padding:1rem;border-radius:4px}
+.sensor canvas{display:block;width:100%;height:auto;aspect-ratio:316/334;image-rendering:pixelated;border-radius:2px}
+.sensor-bar{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:.9rem;font-family:var(--sans);font-size:.85rem;color:var(--muted)}
+.sensor-bar button{font:inherit;font-weight:500;color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:3px;padding:.45rem .8rem;cursor:pointer;white-space:nowrap}
+.sensor-bar button:hover{border-color:var(--ink)}
+.sensor p{margin:.75rem 0 0;font-size:.95rem;line-height:1.5;color:var(--muted)}
+
+/* Sections */
+section{padding:4rem 0;border-top:1px solid var(--rule)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);gap:3rem}
+h2{font-weight:500;font-size:clamp(1.8rem,3.2vw,2.4rem);line-height:1.1;letter-spacing:-.01em;margin:0}
+h3{font-family:var(--sans);font-weight:600;font-size:1.05rem;line-height:1.35;margin:0 0 .4rem}
+.intro{color:var(--muted);margin:.8rem 0 0;font-size:1rem;max-width:22rem}
+
+/* Research areas: each keyed to one sensor channel */
+.areas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem 3rem}
+.area{padding-left:1.1rem;border-left:3px solid var(--c)}
+.area p{margin:0 0 .6rem}
+.area .evidence{font-family:var(--sans);font-size:.88rem;color:var(--muted);line-height:1.5}
+
+/* Metrics */
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5rem;margin-top:2.5rem;padding-top:2rem;border-top:1px dashed var(--rule)}
+.metric strong{display:block;font-weight:400;font-size:2.4rem;line-height:1}
+.metric span{font-family:var(--sans);font-size:.85rem;color:var(--muted)}
+
+/* Publications */
+.pubs{list-style:none;margin:0;padding:0}
+.pubs li{display:grid;grid-template-columns:4rem minmax(0,1fr);gap:1rem;padding:1.25rem 0;border-bottom:1px solid var(--rule)}
+.pubs li:first-child{padding-top:0}
+.pubs .yr{font-family:var(--sans);font-weight:600;color:var(--muted)}
+.pubs .title{font-size:1.2rem;line-height:1.35;margin:0 0 .3rem}
+.pubs .venue{font-family:var(--sans);font-size:.9rem;color:var(--muted);margin:0}
+.pubs .why{margin:.5rem 0 0;font-size:1rem}
+
+/* Timeline (genuinely chronological) */
+.timeline{list-style:none;margin:0;padding:0;position:relative}
+.timeline li{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:1.5rem;padding:0 0 2rem}
+.timeline .when{font-family:var(--sans);font-size:.88rem;color:var(--muted);padding-top:.15rem}
+.timeline .org{font-family:var(--sans);font-size:.92rem;color:var(--muted);margin:0 0 .5rem}
+.timeline ul{margin:0;padding-left:1.1rem}
+.timeline ul li{display:list-item;padding:0 0 .25rem;font-size:1rem}
+.now{display:inline-block;width:8px;height:8px;background:var(--g);border-radius:50%;margin-right:.4rem;vertical-align:middle}
+
+/* Education + skills */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem 3rem}
+.edu p{margin:0 0 .2rem}
+.edu .thesis{font-style:italic;color:var(--muted);font-size:1rem}
+.edu > div{margin-bottom:1.6rem}
+.skills h3{margin-top:1.4rem}
+.skills h3:first-child{margin-top:0}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;margin:0;padding:0}
+.tags li{font-family:var(--sans);font-size:.88rem;padding:.3rem .65rem;border:1px solid var(--rule);border-radius:3px;background:var(--panel)}
+
+footer{border-top:1px solid var(--rule);padding:3rem 0 4rem}
+footer .contact{display:flex;flex-wrap:wrap;gap:1rem 2rem;font-family:var(--sans)}
+footer small{display:block;margin-top:2rem;color:var(--muted);font-family:var(--sans);font-size:.82rem}
+
+@media (max-width:860px){
+  .hero,.sec-head,.two{grid-template-columns:minmax(0,1fr);gap:2rem}
+  .hero{padding-top:1.5rem}
+  .areas{grid-template-columns:minmax(0,1fr)}
+  .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .timeline li{grid-template-columns:minmax(0,1fr);gap:.3rem}
+  nav ul{display:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn:hover{transform:none}}
+@media print{nav,.sensor-bar button{display:none}section{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav aria-label="Principal">
+  <a class="mark" href="#top"><i aria-hidden="true"><b style="background:var(--r)"></b><b style="background:var(--g)"></b><b style="background:var(--g)"></b><b style="background:var(--b)"></b></i>E. González Fernández</a>
+  <ul>
+    <li><a href="#investigacion">Investigación</a></li>
+    <li><a href="#publicaciones">Publicaciones</a></li>
+    <li><a href="#experiencia">Experiencia</a></li>
+    <li><a href="#formacion">Formación</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <div>
+    <h1>Edgar González Fernández</h1>
+    <p class="role">Investigador en inteligencia artificial: visión por computadora, sistemas multiagente y optimización.</p>
+    <p class="lede">Matemático de formación con dos doctorados (Ingeniería Matemática por la UCM–UPM y Ciencias de la Computación por el Cinvestav). Diseño modelos y algoritmos de IA con fundamento matemático, los llevo a código en Python y formo a quienes los van a usar. Miembro del SNII Nivel I.</p>
+    <div class="actions">
+      <a class="btn primary" href="mailto:edgar.gonzalez@ucm.es">Escribirme</a>
+      <a class="btn" href="https://github.com/egonzalez1989/">GitHub</a>
+      <a class="btn" href="https://scholar.google.com/citations?user=S31IbikAAAAJ&amp;hl=es">Google Scholar</a>
+      <a class="btn" href="https://arxiv.org/abs/2601.13452">arXiv</a>
+      <a class="btn" href="CVEdgar.pdf">CV en PDF</a>
+    </div>
+  </div>
+
+  <figure class="sensor" aria-label="Retrato renderizado como mosaico de filtro de color">
+    <canvas id="cfa" width="316" height="334" role="img" aria-label="Retrato de Edgar González Fernández"></canvas>
+    <div class="sensor-bar">
+      <span id="cfa-state">Vista: mosaico Bayer</span>
+      <button type="button" id="cfa-toggle" aria-pressed="false">Interpolar color</button>
+    </div>
+    <p>Una cámara registra un solo color por píxel y reconstruye los otros dos por interpolación. Mi tesis doctoral usa las huellas de ese proceso, junto con el ruido del sensor, para detectar imágenes manipuladas.</p>
+  </figure>
+</header>
+
+<section id="investigacion" aria-labelledby="h-inv">
+  <div class="sec-head">
+    <div>
+      <h2 id="h-inv">Líneas de trabajo en IA</h2>
+      <p class="intro">Cuatro áreas donde combino teoría matemática, implementación y aplicación a problemas reales.</p>
+    </div>
+    <div>
+      <div class="areas">
+        <article class="area" style="--c:var(--r)">
+          <h3>Visión por computadora y forense digital</h3>
+          <p>Detección de manipulaciones en imágenes y video a partir de artefactos de interpolación cromática, ruido del sensor y algoritmos de compresión.</p>
+          <p class="evidence">Tesis doctoral UCM–UPM, proyectos europeos Horizon 2020, publicaciones en <em>Expert Systems with Applications</em> e <em>IEEE Transactions on Intelligent Transportation Systems</em>.</p>
+        </article>
+        <article class="area" style="--c:var(--g)">
+          <h3>Sistemas multiagente y simulación</h3>
+          <p>Modelado de agentes en entornos urbanos: peatones y vehículos que planifican rutas con búsqueda heurística ponderada para estudiar incidentes.</p>
+          <p class="evidence">Preprint 2026 basado en Weighted A*. Docencia en Sistemas Multiagente en el Tec de Monterrey.</p>
+        </article>
+        <article class="area" style="--c:var(--b)">
+          <h3>Optimización, búsqueda y metaheurísticas</h3>
+          <p>Algoritmos de búsqueda informada, metaheurísticas aplicadas a problemas de ruteo y análisis de complejidad.</p>
+          <p class="evidence">Profesor de Metaheurísticas en la Licenciatura en Matemáticas Aplicadas de la UAA. Algoritmos de control óptimo en aplicaciones financieras.</p>
+        </article>
+        <article class="area" style="--c:var(--ink)">
+          <h3>Aprendizaje automático y ciencia de datos</h3>
+          <p>Modelos predictivos y análisis de datos en contextos aplicados, desde riesgo de crédito hasta sistemas complejos.</p>
+          <p class="evidence">Consultor en IA en INFOTEC; excoordinador de la Maestría en Ciencia de Datos e Información; dirección de tesis en aprendizaje computacional.</p>
+        </article>
+      </div>
+
+      <div class="metrics" aria-label="Indicadores de producción científica">
+        <div class="metric"><strong>10</strong><span>artículos JCR, 4 como primer autor</span></div>
+        <div class="metric"><strong>238</strong><span>citas en <a href="https://scholar.google.com/citations?user=S31IbikAAAAJ&amp;hl=es">Google Scholar</a></span></div>
+        <div class="metric"><strong>9</strong><span>índice h en Google Scholar (Scopus: 8)</span></div>
+        <div class="metric"><strong>20+</strong><span>artículos revisados para IEEE, Springer y MDPI</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="publicaciones" aria-labelledby="h-pub">
+  <div class="sec-head">
+    <div>
+      <h2 id="h-pub">Publicaciones seleccionadas</h2>
+      <p class="intro">Una muestra de trabajos que aplican IA y procesamiento de señales a problemas de seguridad y movilidad.</p>
+    </div>
+    <ol class="pubs" reversed>
+      <li>
+        <span class="yr">2026</span>
+        <div>
+          <p class="title"><a href="https://arxiv.org/abs/2601.13452">A simulation of urban incidents involving pedestrians and vehicles based on Weighted A*</a></p>
+          <p class="venue">González Fernández, E. arXiv e-prints, 2601.13452.</p>
+          <p class="why">Simulación multiagente de tráfico urbano donde cada agente planifica con búsqueda heurística ponderada.</p>
+        </div>
+      </li>
+      <li>
+        <span class="yr">2023</span>
+        <div>
+          <p class="title">A Multi-channel Approach for Detecting Tampering in Colour Filter Images</p>
+          <p class="venue">González Fernández, E., et al. <em>Expert Systems with Applications</em>, 120498.</p>
+          <p class="why">Detección de manipulaciones explotando la correlación entre canales que deja el mosaico de filtro de color.</p>
+        </div>
+      </li>
+      <li>
+        <span class="yr">2022</span>
+        <div>
+          <p class="title">Digital Video Manipulation Detection Technique Based on Compression Algorithms</p>
+          <p class="venue">González Fernández, E., et al. <em>IEEE Transactions on Intelligent Transportation Systems</em>, 23(3), 2596–2605.</p>
+          <p class="why">Forense de video basado en las huellas de los algoritmos de compresión, con aplicación a sistemas de transporte.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="experiencia" aria-labelledby="h-exp">
+  <div class="sec-head">
+    <div>
+      <h2 id="h-exp">Experiencia</h2>
+      <p class="intro">Investigación, docencia y dirección académica en IA y ciencia de datos, más experiencia en la industria del software.</p>
+    </div>
+    <ol class="timeline">
+      <li>
+        <span class="when"><span class="now" aria-hidden="true"></span>2025 – actual</span>
+        <div>
+          <h3>Consultor en Inteligencia Artificial</h3>
+          <p class="org">INFOTEC, Aguascalientes</p>
+          <ul>
+            <li>Investigación y difusión de herramientas de IA para la modelación de problemas aplicados.</li>
+            <li>Asesoría a estudiantes de la Maestría en Ciencia de Datos e Información y del Doctorado en Ciencias en Ciencia de Datos.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="when"><span class="now" aria-hidden="true"></span>2026 – actual</span>
+        <div>
+          <h3>Profesor</h3>
+          <p class="org">Universidad Autónoma de Aguascalientes</p>
+          <ul>
+            <li>Metaheurísticas en la Licenciatura en Matemáticas Aplicadas.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="when">2024 – 2025</span>
+        <div>
+          <h3>Profesor de Tiempo Completo</h3>
+          <p class="org">Tecnológico de Monterrey, Monterrey</p>
+          <ul>
+            <li>Docencia y coordinación en Inteligencia Artificial, Sistemas Multiagente, Teoría de la Computación y Matemáticas.</li>
+            <li>Evaluación de proyectos estudiantiles en IA, Ciencia de Datos e Ingeniería Computacional.</li>
+            <li>Actualización de planes de estudio y desarrollo de material didáctico.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="when">2023 – 2024</span>
+        <div>
+          <h3>Profesor Investigador Titular A</h3>
+          <p class="org">INFOTEC, Aguascalientes</p>
+          <ul>
+            <li>Investigación en procesamiento de imágenes y dirección de proyectos de ciencia de datos.</li>
+            <li>Titular de Tratamiento Digital de Imágenes y Seminarios de Proyectos.</li>
+            <li>Coordinación académica de la Maestría en Ciencia de Datos e Información.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="when">2022 – 2023</span>
+        <div>
+          <h3>Profesor por asignatura</h3>
+          <p class="org">Tecnológico de Monterrey</p>
+          <ul>
+            <li>Modelación de fenómenos físicos, matemáticas financieras y programación.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="when">2020 – 2022</span>
+        <div>
+          <h3>Subgerente de Docencia</h3>
+          <p class="org">INFOTEC, Aguascalientes</p>
+          <ul>
+            <li>Coordinación del programa de Maestría en Ciencia de Datos e Información.</li>
+            <li>Gestión de admisión, certificación y titulación de los posgrados.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="when">2017 – 2019</span>
+        <div>
+          <h3>Asistente de Investigación</h3>
+          <p class="org">Universidad Complutense de Madrid</p>
+          <ul>
+            <li>Proyectos europeos financiados por Horizon 2020.</li>
+            <li>Diseño e implementación en Python de técnicas forenses para imágenes y video digital.</li>
+            <li>Organización y participación en congresos internacionales de seguridad y cómputo científico.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="when">2013 – 2015</span>
+        <div>
+          <h3>Desarrollador Java</h3>
+          <p class="org">Insys y MITEC, Ciudad de México</p>
+          <ul>
+            <li>Servicios web en Java e integración de primitivas criptográficas en pagos con tarjeta.</li>
+            <li>Modelos estocásticos y algoritmos de control óptimo para aplicaciones financieras.</li>
+          </ul>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="formacion" aria-labelledby="h-edu">
+  <div class="sec-head">
+    <div>
+      <h2 id="h-edu">Formación y competencias</h2>
+    </div>
+    <div class="two">
+      <div class="edu">
+        <div>
+          <h3>Doctorado en Ingeniería Matemática, Estadística e Investigación Operativa</h3>
+          <p>UCM – UPM, Madrid, 2018–2023</p>
+          <p class="thesis">Técnicas de detección de manipulaciones en imágenes basadas en los algoritmos de interpolación cromática y ruido del sensor.</p>
+        </div>
+        <div>
+          <h3>Doctorado en Ciencias de la Computación</h3>
+          <p>Cinvestav-IPN, Ciudad de México, 2016–2020</p>
+          <p class="thesis">Protocolos de conocimiento nulo basados en sistemas de ternas de Steiner.</p>
+        </div>
+        <div>
+          <h3>Maestría en Ciencias, Matemáticas</h3>
+          <p>Cinvestav-IPN, 2010–2013</p>
+          <p class="thesis">Criptosistemas de curva elíptica en campos de característica 3.</p>
+        </div>
+        <div>
+          <h3>Licenciatura en Matemáticas Aplicadas</h3>
+          <p>Universidad Autónoma del Estado de Hidalgo, 2003–2010</p>
+        </div>
+      </div>
+
+      <div class="skills">
+        <h3>Inteligencia artificial</h3>
+        <ul class="tags">
+          <li>Visión por computadora</li><li>Procesamiento digital de imágenes</li><li>Forense de imagen y video</li>
+          <li>Sistemas multiagente</li><li>Búsqueda heurística (A*)</li><li>Metaheurísticas</li>
+          <li>Aprendizaje automático</li><li>Ciencia de datos</li>
+        </ul>
+        <h3>Matemáticas aplicadas</h3>
+        <ul class="tags">
+          <li>Estadística</li><li>Investigación de operaciones</li><li>Modelos estocásticos</li>
+          <li>Control óptimo</li><li>Métodos numéricos</li><li>Criptografía</li>
+        </ul>
+        <h3>Programación</h3>
+        <ul class="tags"><li>Python</li><li>Java</li></ul>
+        <h3>Docencia y servicio</h3>
+        <ul class="tags">
+          <li>Diseño de planes de estudio</li><li>Dirección de tesis de maestría</li>
+          <li>Evaluador internacional SENACYT Panamá (2024)</li><li>Jurado, Ascendion Science Fair</li>
+        </ul>
+        <h3>Idiomas</h3>
+        <ul class="tags"><li>Español nativo</li><li>Inglés avanzado (TOEFL iBT 104)</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer id="contacto">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Contacto</h2>
+      <div>
+        <p style="margin:0 0 1.5rem;max-width:36rem">Abierto a posiciones de investigación y desarrollo en inteligencia artificial, visión por computadora y ciencia de datos, así como a colaboraciones académicas.</p>
+        <div class="contact">
+          <a href="mailto:edgar.gonzalez@ucm.es">edgar.gonzalez@ucm.es</a>
+          <a href="https://github.com/egonzalez1989/">github.com/egonzalez1989</a>
+          <a href="https://scholar.google.com/citations?user=S31IbikAAAAJ&amp;hl=es">Google Scholar</a>
+          <span>Aguascalientes, México</span>
+        </div>
+        <small>Miembro del Sistema Nacional de Investigadoras e Investigadores, Nivel I (2025–2029).</small>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var canvas=document.getElementById('cfa'), ctx=canvas.getContext('2d');
+  var btn=document.getElementById('cfa-toggle'), state=document.getElementById('cfa-state');
+  var W=canvas.width,H=canvas.height, CELL=6;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var img=new Image(), src=null, mosaic=null, full=null, t=0, showing=false, raf=null;
+
+  img.onload=function(){
+    var off=document.createElement('canvas'); off.width=W; off.height=H;
+    var o=off.getContext('2d'); o.drawImage(img,0,0,W,H);
+    full=o.getImageData(0,0,W,H);
+    // Build Bayer mosaic: RGGB, each block keeps a single channel
+    mosaic=o.createImageData(W,H);
+    var d=full.data, m=mosaic.data;
+    for(var by=0;by<H;by+=CELL){
+      for(var bx=0;bx<W;bx+=CELL){
+        var cx=Math.min(bx+(CELL>>1),W-1), cy=Math.min(by+(CELL>>1),H-1);
+        var k=(cy*W+cx)*4, px=(bx/CELL)&1, py=(by/CELL)&1;
+        var ch = (px===0&&py===0)?0 : (px===1&&py===1)?2 : 1;
+        var v=d[k+ch];
+        for(var y=by;y<Math.min(by+CELL,H);y++){
+          for(var x=bx;x<Math.min(bx+CELL,W);x++){
+            var i=(y*W+x)*4, soft=v*0.42; m[i]=m[i+1]=m[i+2]=soft; m[i+ch]=v; m[i+3]=255;
+          }
+        }
+      }
+    }
+    draw();
+  };
+  img.src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCAFOATwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6pooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKK8R+M37R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';
+
+  function draw(){
+    if(!full) return;
+    if(t<=0){ctx.putImageData(mosaic,0,0);return;}
+    if(t>=1){ctx.putImageData(full,0,0);return;}
+    var out=ctx.createImageData(W,H), a=mosaic.data, b=full.data, o=out.data;
+    for(var i=0;i<o.length;i++) o[i]=a[i]+(b[i]-a[i])*t;
+    ctx.putImageData(out,0,0);
+  }
+  function animate(target){
+    cancelAnimationFrame(raf);
+    if(reduce){t=target;draw();return;}
+    var start=null, from=t;
+    function step(ts){
+      if(!start) start=ts;
+      var p=Math.min((ts-start)/700,1), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      t=from+(target-from)*e; draw();
+      if(p<1) raf=requestAnimationFrame(step);
+    }
+    raf=requestAnimationFrame(step);
+  }
+  btn.addEventListener('click',function(){
+    showing=!showing;
+    btn.setAttribute('aria-pressed',String(showing));
+    btn.textContent=showing?'Ver sensor crudo':'Interpolar color';
+    state.textContent=showing?'Vista: color interpolado':'Vista: mosaico Bayer';
+    animate(showing?1:0);
+  });
+})();
+</script>
+</body>
+</html>
